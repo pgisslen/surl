@@ -44,6 +44,7 @@ public class SURLApplication extends Application<SURLConfiguration> {
         jdbi.registerContainerFactory(new OptionalContainerFactory());
         final UrlLookupDao urlLookupDao = jdbi.onDemand(UrlLookupDao.class);
 
+        //Ugly fix until liquibase is triggered during startup.
         if (configuration.isMemDb()) {
             urlLookupDao.createTable();
         }
