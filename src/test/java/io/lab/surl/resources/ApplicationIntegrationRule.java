@@ -3,7 +3,7 @@ package io.lab.surl.resources;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import io.lab.surl.SURLApplication;
-import io.lab.surl.SURLConfiguration;
+import io.lab.surl.configuration.SURLConfiguration;
 
 public class ApplicationIntegrationRule extends DropwizardAppRule<SURLConfiguration> {
 

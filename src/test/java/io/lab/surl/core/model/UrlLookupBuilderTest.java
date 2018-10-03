@@ -1,7 +1,7 @@
-package io.lab.surl.core;
+package io.lab.surl.core.model;
 
-import static io.lab.surl.core.model.UrlLookupBuilder.withCrc32;
-import static io.lab.surl.core.model.UrlLookupBuilder.withMd5;
+import static io.lab.surl.core.util.TinyUrlCreator.withCrc32;
+import static io.lab.surl.core.util.TinyUrlCreator.withMd5;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class UrlLookupBuilderTest {
     }
 
     @Test
-    public void createWithMd5(){
+    public void createWithMd5() {
         Assertions.assertThat(withMd5(urlToLasVegas)).isEqualTo(withMd5(urlToLasVegas));
     }
 }

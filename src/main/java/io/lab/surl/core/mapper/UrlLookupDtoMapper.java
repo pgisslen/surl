@@ -1,7 +1,7 @@
 package io.lab.surl.core.mapper;
 
 import io.lab.surl.api.CreateShortUrlRequest;
-import io.lab.surl.api.CreateShortUrlResponse;
+import io.lab.surl.api.ShortUrlResponse;
 import io.lab.surl.core.model.UrlDigest;
 import io.lab.surl.core.model.UrlLookup;
 import io.lab.surl.core.util.TinyUrlCreator;
@@ -17,18 +17,18 @@ public class UrlLookupDtoMapper {
     private final String servieUrl;
 
     public UrlLookup toUrlLookup(CreateShortUrlRequest request) {
-        final UrlDigest digest = request.getDigester().orElse(defaualtDigest);
+        final UrlDigest digest = request.getDigest().orElse(defaualtDigest);
         final String tinyUrl =
             TinyUrlCreator.createTinyUrl(request.getUrl(), digest);
 
         return UrlLookup.builder().url(request.getUrl()).key(tinyUrl).digest(digest).build();
     }
 
-    public CreateShortUrlResponse toResponse(UrlLookup urlLookup) {
-        return CreateShortUrlResponse.builder()
+    public ShortUrlResponse toResponse(UrlLookup urlLookup) {
+        return ShortUrlResponse.builder()
             .orignalUrl(urlLookup.getUrl())
             .tinyUrl(servieUrl + "/" + urlLookup.getKey())
-            .urlDigest(urlLookup.getDigest())
+            .digest(urlLookup.getDigest())
             .build();
     }
 
