@@ -1,0 +1,16 @@
+logging:
+  level: INFO
+  loggers:
+    lab: INFO
+
+serviceUrl: http://surl.com
+
+database:
+  driverClass: org.postgresql.Driver
+  user: surl
+  password: super-secret
+  url: jdbc:postgresql://postgres.surl.com/surl
+  properties:
+    charSet: UTF-8
+
+
