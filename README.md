@@ -1,6 +1,9 @@
-# sURL
+# sURL - s(hort)URL
 
-How to start the sURL application
+# How to start the application
+
+Required: Java 8 (untested with newer versions) and Maven.
+
 ---
 
 1. Run `mvn clean install` to build your application
