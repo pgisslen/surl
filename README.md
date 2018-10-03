@@ -1,4 +1,4 @@
-# sURL - s(hort)URL
+# sURL
 
 How to start the application
 
