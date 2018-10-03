@@ -12,3 +12,5 @@ dataSourceFactory:
 
 
 serviceUrl: http://localhost:8080
+
+memDb: true
