@@ -1,8 +1,10 @@
 package io.lab.surl;
 
 import io.dropwizard.Application;
+import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.OptionalContainerFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.lab.surl.db.UrlLookupDao;
@@ -24,7 +26,12 @@ public class SURLApplication extends Application<SURLConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<SURLConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addBundle(new MigrationsBundle<SURLConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(SURLConfiguration configuration) {
+                return configuration.getDataSourceFactory();
+            }
+        });
     }
 
     @Override
@@ -37,7 +44,9 @@ public class SURLApplication extends Application<SURLConfiguration> {
         jdbi.registerContainerFactory(new OptionalContainerFactory());
         final UrlLookupDao urlLookupDao = jdbi.onDemand(UrlLookupDao.class);
 
-        urlLookupDao.createTable();
+        if (configuration.isMemDb()) {
+            urlLookupDao.createTable();
+        }
 
         environment.jersey().register(new UrlShorternerResource(urlLookupDao, configuration.getServiceUrl()));
     }
