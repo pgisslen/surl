@@ -49,6 +49,12 @@ public class UrlShorternerResource {
     }
 
     @GET
+    public String getInfo() {
+        return "Hello. Create short url by POSTing to root with the URL as body. Or GET to /create with query param "
+            + "'url'";
+    }
+
+    @GET
     @Path("{key}")
     public Response redirect(@PathParam("key") final String key) {
 
