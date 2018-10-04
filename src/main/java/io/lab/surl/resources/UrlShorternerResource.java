@@ -35,7 +35,7 @@ public class UrlShorternerResource {
     @POST
     public String createShort(@NotNull @URL final String url) {
 
-        final String key = UrlLookupBuilder.createUrlShortcutKey(url);
+        final String key = UrlLookupBuilder.withCrc32(url);
         urlLookupDao.insert(new UrlLookup(key, url));
         final String shortCutUrl = serviceUrl + "/" + key;
         log.info("Created url shortcut: {} -> {}", key, shortCutUrl);
