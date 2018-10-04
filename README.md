@@ -14,7 +14,7 @@ Required: Java 8 (untested with newer versions) and Maven.
 ---
 To run with stand alone DB:
 
-1. Update config.yml to point to postgres
+1. Update datasource config.yml match the running db instance
 2. Run `java -jar target/surl-1.0-SNAPSHOT.jar db migrate config.yml`
 
 Health Check
