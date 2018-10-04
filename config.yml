@@ -5,7 +5,7 @@ logging:
 
 serviceUrl: http://surl.com
 
-database:
+dataSourceFactory:
   driverClass: org.postgresql.Driver
   user: surl
   password: super-secret
