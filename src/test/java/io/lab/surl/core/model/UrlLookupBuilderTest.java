@@ -1,7 +1,7 @@
 package io.lab.surl.core;
 
-import static io.lab.surl.core.UrlLookupBuilder.withCrc32;
-import static io.lab.surl.core.UrlLookupBuilder.withMd5;
+import static io.lab.surl.core.model.UrlLookupBuilder.withCrc32;
+import static io.lab.surl.core.model.UrlLookupBuilder.withMd5;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
