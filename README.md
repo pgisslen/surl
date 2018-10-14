@@ -8,6 +8,7 @@ How to start the application
 2. Start application with embedded DB: `java -jar target/surl-1.0-SNAPSHOT.jar server localhost_config.yml`
 3. OR start application with stand alone DB: `java -jar target/surl-1.0-SNAPSHOT.jar server config.yml`
 4. To check that your application is running enter url `http://localhost:8080`
+5. Service is documented using Swagger @ `http://localhost:8080/swagger` You can use it to try out the API as will
 
 Required: Java 8 (untested with newer versions) and Maven.
 
