@@ -3,11 +3,13 @@ package io.lab.surl.api;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.lab.surl.core.model.UrlDigest;
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
+@ApiModel("ShortUrlResponse")
 public class ShortUrlResponse {
 
     @NonNull

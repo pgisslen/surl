@@ -41,7 +41,6 @@ public class SURLConfiguration extends Configuration implements DatabaseConfigur
 
     public SwaggerBundleConfiguration getSwaggerBundleConfiguration() {
         final SwaggerBundleConfiguration swaggerBundleConfiguration = new SwaggerBundleConfiguration();
-        //swaggerBundleConfiguration.setResourcePackage(UrlShorternerResource.class.getPackage().getName());
         swaggerBundleConfiguration.setResourcePackage("io.lab.surl.resources");
         return swaggerBundleConfiguration;
     }

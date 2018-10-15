@@ -9,7 +9,7 @@ import io.swagger.annotations.SwaggerDefinition;
 @SwaggerDefinition(
     info = @Info(
         title = "API documentation URL Shorterner Service",
-        description = "Transforms a long URL into tiny one.",
+        description = "Transforms a long URL into a tiny one.",
         version = "v1.0",
         contact = @Contact(
             name = "Petter",

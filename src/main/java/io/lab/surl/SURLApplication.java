@@ -72,6 +72,7 @@ public class SURLApplication extends Application<SURLConfiguration> {
 
 
         //Add custom mapper for "service specific" errors. Will be mapped into standard dropwizard error message
+        //For other exception. Rely on Dropwizard Default exception mappers.
         environment.jersey().register(new SystemExceptionMapper());
 
         // adds the /swagger.json and /swagger.yaml resource

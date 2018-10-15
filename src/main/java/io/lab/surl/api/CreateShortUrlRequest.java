@@ -20,7 +20,7 @@ public class CreateShortUrlRequest {
     @ValidUrl
     @ApiModelProperty(value = "Valid HTTP(s) URL", example = "http://www.google.com")
     private final String url;
-    @ApiModelProperty(allowEmptyValue = true)
+    @ApiModelProperty(allowEmptyValue = true    )
     @ValidEnum(targetClassType = UrlDigest.class)
     private final String digest;
 
