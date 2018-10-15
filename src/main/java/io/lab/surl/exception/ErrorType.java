@@ -6,7 +6,8 @@ import org.eclipse.jetty.http.HttpStatus;
 public enum ErrorType {
 
     URL_NOT_FOUND(HttpStatus.NOT_FOUND_404),
-    URL_COLLISION(HttpStatus.BAD_REQUEST_400);
+    URL_COLLISION(HttpStatus.BAD_REQUEST_400),
+    CONSTRAINT_VIOLATION(HttpStatus.UNPROCESSABLE_ENTITY_422);
 
     ErrorType(final int responseCode) {
         this.responseCode = responseCode;

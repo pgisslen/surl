@@ -5,15 +5,15 @@ import io.dropwizard.jersey.errors.LoggingExceptionMapper;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class CatchAllExceptionMapper extends LoggingExceptionMapper<SystemException> {
+public class SystemExceptionMapper extends LoggingExceptionMapper<SystemException> {
 
     @Override
     public Response toResponse(SystemException exception) {
         final int responseCode = exception.getErrorType().getResponseCode();
         return Response
             .status(responseCode)
-            .type(MediaType.APPLICATION_XML_TYPE)
-            .entity(new ErrorMessage(responseCode, exception.getMessage(),exception.getErrorType().name()))
+            .type(MediaType.APPLICATION_JSON_TYPE)
+            .entity(new ErrorMessage(responseCode, exception.getMessage(), exception.getErrorType().name()))
             .build();
     }
 }

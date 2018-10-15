@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - preConditions:
+    - runningAs:
+        username: SA
+  - changeSet:
+      id: 1
+      author: petter@gisslen.com
+      changes:
+        - createTable:
+            tableName: url_lookup
+            columns:
+              - column:
+                  name: key
+                  type: varchar(64)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: url
+                  type: varchar(2000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: digest
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
