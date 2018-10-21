@@ -3,6 +3,7 @@ package io.lab.surl.resources;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.util.Duration;
+import io.lab.surl.db.DatabaseManager;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import org.junit.BeforeClass;
@@ -13,10 +14,15 @@ import org.junit.rules.TestRule;
 public abstract class AbstractIntegrationTest {
 
     private static Client client;
+    private static DatabaseManager manager;
 
     @BeforeClass
     public static void beforeClass() {
         client = getClient();
+        manager = new DatabaseManager(
+            ApplicationIntegrationRule.getInstance().getConfiguration(),
+            ApplicationIntegrationRule.getInstance().getEnvironment()
+        );
     }
 
     @ClassRule
@@ -38,4 +44,10 @@ public abstract class AbstractIntegrationTest {
     protected WebTarget createWebTarget() {
         return getClient().target("http://localhost:" + ApplicationIntegrationRule.getInstance().getLocalPort());
     }
+
+    protected DatabaseManager getDatabaseManager(){
+        return manager;
+    }
+
+
 }

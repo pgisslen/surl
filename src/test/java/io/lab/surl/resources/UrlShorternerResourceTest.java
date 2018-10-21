@@ -1,5 +1,6 @@
 package io.lab.surl.resources;
 
+import static io.lab.surl.core.model.UrlDigest.CRC32;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -8,12 +9,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.dropwizard.jersey.errors.ErrorMessage;
 import io.lab.surl.api.CreateShortUrlRequest;
 import io.lab.surl.api.ShortUrlResponse;
+import io.lab.surl.core.model.UrlLookup;
+import io.lab.surl.core.util.TinyUrlCreator;
+import io.lab.surl.db.UrlLookupDao;
 import io.lab.surl.exception.ErrorType;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.http.HttpStatus;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class UrlShorternerResourceTest extends AbstractIntegrationTest {
@@ -62,8 +65,23 @@ public class UrlShorternerResourceTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void differentUrlToSameHashShouldBeRejecterd() {
-        //TODO: Figure out how to create an collision, ie different URLs but with same has value.
+    public void hashCollisionShouldFail() {
+        final String url = "http://www.fz.se";
+        final String key = TinyUrlCreator.withCrc32(url);
+        final UrlLookup first = UrlLookup.builder()
+            .key(key)
+            .url(url + "/foo")
+            .digest(CRC32)
+            .build();
+
+        final UrlLookupDao lookupDao = getDatabaseManager().getDao(UrlLookupDao.class);
+        //Insert  "invalid" value direct into db
+        lookupDao.insert(first);
+
+        //Try to create a valid value. Should be rejected since the key points to other URL
+        final CreateShortUrlRequest request = CreateShortUrlRequest.withCrc32(url);
+        final Response response = createTinyUrl(request);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_BAD_REQUEST);
     }
 
     @Test
@@ -76,30 +94,29 @@ public class UrlShorternerResourceTest extends AbstractIntegrationTest {
             createWebTarget().path("/").request().post(Entity.entity(invalidDigest, MediaType.APPLICATION_JSON));
         final String entity = response.readEntity(String.class);
         assertThat(entity).contains("digest");
-        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_UNPROCESSABLE_ENTITY);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_UNPROCESSABLE_ENTITY);
     }
 
     @Test
     public void missingUrlShouldFail() {
         final Response response = createTinyUrl(new CreateShortUrlRequest(null, null));
-        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_UNPROCESSABLE_ENTITY);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_UNPROCESSABLE_ENTITY);
     }
 
     @Test
     public void invalidUrlShouldFail() {
         final Response response = createTinyUrl("!foo");
-        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_UNPROCESSABLE_ENTITY);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_UNPROCESSABLE_ENTITY);
     }
 
     @Test
     public void unknownShouldReturn404() {
 
         final Response response = createWebTarget().path("/" + "fadfdasffadsfd").request().get();
-        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_NOT_FOUND);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_NOT_FOUND);
         final ErrorMessage errorMessage = response.readEntity(ErrorMessage.class);
-        Assertions.assertThat(errorMessage.getDetails()).isEqualTo(ErrorType.URL_NOT_FOUND.name());
+        assertThat(errorMessage.getDetails()).isEqualTo(ErrorType.URL_NOT_FOUND.name());
     }
-
 
     private void assertResponseMatchesRequest(final CreateShortUrlRequest expected, final ShortUrlResponse actual) {
         assertThat(actual.getOrignalUrl()).isEqualTo(expected.getUrl());
@@ -122,7 +139,7 @@ public class UrlShorternerResourceTest extends AbstractIntegrationTest {
 
     private void assertRedirectSuccess(final ShortUrlResponse shortCut) {
         final Response redirectResponse = getClient().target(shortCut.getOrignalUrl()).request().get();
-        Assertions.assertThat(redirectResponse.getStatus()).isEqualTo(HttpStatus.SC_OK);
+        assertThat(redirectResponse.getStatus()).isEqualTo(HttpStatus.SC_OK);
     }
 
     private <T> T getResponseEntityOrFail(Response response, Class<T> clazz) {
